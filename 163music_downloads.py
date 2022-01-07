@@ -12,10 +12,8 @@ host = "https://netease-cloud-music-api-gamma-orpin.vercel.app"  # 网易云api�
 header = {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}  # 请求头
 config_ = "user.json"  # 配置文件
 
-# 判断密码是否正确
 
-
-def confirmPassword(name, password, data):
+def confirmPassword(name, password, data): # 判断密码是否正确
     url = host
     d = {}
     if "@" in name:
@@ -41,10 +39,8 @@ def confirmPassword(name, password, data):
         print("登录出错")
         inputAgain(data)
 
-# 验证cookie可用性
 
-
-def confirmCookie(cookies):
+def confirmCookie(cookies): # 验证cookie可用性
     t = int(time.time())
     url = host + "/login/status?timestamp=" + str(t)
     response = requests.get(url, headers=header, cookies=cookies)
@@ -69,10 +65,9 @@ def getCookieDict(cook):
             name, value = line.strip().split('=')
             cookies[name] = value  # 为字典cookies添加内容
     return cookies
-# 登录方法
 
 
-def login():
+def login(): # 登录方法
     try:
         r = open(config_, "r")
         s = r.read()
@@ -104,10 +99,8 @@ def login():
     except Exception as ex:
         print(traceback.format_exc())
 
-# 初始化，检查目录
 
-
-def init():
+def init():  # 初始化，检查目录
     # 读去配置文件name，password，cookie
     if not os.path.exists(config_):
         w = open(config_, "w")
@@ -116,10 +109,9 @@ def init():
     # 创建默认下载目录
     if not os.path.isdir("DownLoads"):
         os.makedirs("DownLoads")
-# 获取歌单详情(包括介绍，名字等等)
 
 
-def getListDetail(ids, cookie):
+def getListDetail(ids, cookie): # 获取歌单详情(包括介绍，名字等等)
     url = host + "/playlist/detail?id=" + str(ids)
     response = requests.get(url, headers=header, cookies=cookie)
     json_obj = json.loads(response.text)
@@ -130,10 +122,8 @@ def getListDetail(ids, cookie):
         sys.exit()
     return j
 
-# 获取歌单所有歌曲id,返回 列表 一系列id
 
-
-def getListId(j):
+def getListId(j): # 获取歌单所有歌曲id,返回 列表 一系列id
     l = []
     trackIds = j["trackIds"]
     for ids in trackIds:
@@ -141,10 +131,8 @@ def getListId(j):
         l.append(ids["id"])
     return l
 
-# 获取音乐真实下载地址
 
-
-def getMusicUrl(id, cookie):
+def getMusicUrl(id, cookie): # 获取音乐真实下载地址
     url = host + "/song/url?id=" + str(id)
     response = requests.get(url, headers=header, cookies=cookie)
     json_obj = json.loads(response.text)
@@ -172,7 +160,6 @@ def getMusicDetail(id, cookie):  # 获取音乐详情（歌名，作者，专辑
 
 def publishDownLoad(ids, cookie): # 打包歌单的歌曲下载链接、歌名等，返回的是json数组对象 # 过程时间比较长，需要进度条
     downl = []
-
     with tqdm(total=len(ids), desc='进度') as bar:
         t = 0
         for i in ids:
@@ -233,7 +220,6 @@ def wb_download(down_url, output_filename, down_path):  # 普通下载
     except Exception as e:
         print(e)
         pass
-
 
 
 def start_download(down_path):  # 下载
