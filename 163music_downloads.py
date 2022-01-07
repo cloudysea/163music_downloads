@@ -150,10 +150,8 @@ def getMusicUrl(id, cookie):
     json_obj = json.loads(response.text)
     return json_obj["data"][0]["url"]
 
-# 获取音乐详情（歌名，作者，专辑)
 
-
-def getMusicDetail(id, cookie):
+def getMusicDetail(id, cookie):  # 获取音乐详情（歌名，作者，专辑)
     url = host + "/song/detail?ids=" + str(id)
     response = requests.get(url, headers=header, cookies=cookie)
     json_obj = json.loads(response.text)
@@ -240,10 +238,10 @@ def wb_download(down_url, output_filename, down_path):  # 普通下载
 
 def start_download(down_path):  # 下载
     xz = input("是否下载歌曲?(y/n):")
-    if xz == 'y' or '\n':
+    if xz == 'y' or 'Y' or 'yes' or 'Yes' or 'YES' or '':
         print("默认保存路径为%s" % down_path)
         IDMdownload(download, down_path)
-    elif xz == "n":
+    elif xz == "n" or "N" or "No" or "no":
         exit()
     else:
         print("输入有误!")
@@ -264,7 +262,7 @@ print("欢迎使用网易云歌单音乐批量导出工具")
 init()
 # 是否要登录？
 user_input = input("您是否要登录网易云音乐？(y/n):").strip()
-if user_input == 'y' or '\n':
+if user_input == 'y' or 'Y' or 'yes' or 'Yes' or 'YES' or '':
     cook = login()
     # print(cookie)
     cookie = getCookieDict(cook)
